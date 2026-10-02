@@ -1,19 +1,19 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "seo-dashboard",
-  "version": "0.1.3",
-  "description": "A daily SEO dashboard in ChatGPT: rank tracking via Apify, SERP insights and a site check.",
+  "version": "0.1.4",
+  "description": "A custom SEO dashboard for ChatGPT, built on OpenAI's Plugin Extensions (MCP Extensions): daily rank tracking via Apify, competitors, SERP insights and a site check, in the ChatGPT sidebar.",
   "license": "MIT",
   "author": { "name": "jenstools", "url": "https://github.com/jenstools" },
-  "repository": "https://github.com/jenstools/seo-dashboard",
-  "keywords": ["seo", "rank-tracking", "serp", "apify", "google", "mcp-extensions"],
+  "repository": "https://github.com/jenstools/custom-seo-dashboard-chatgpt-plugin-extensions",
+  "keywords": ["seo", "seo-dashboard", "rank-tracking", "serp", "apify", "google", "chatgpt-plugin", "plugin-extensions", "mcp-extensions"],
   "extensions": {
     "com.openai": {
       "onboardingSkill": "./skills/onboarding/SKILL.md",
       "interface": {
         "displayName": "SEO Dashboard",
         "shortDescription": "Daily Google rankings, like a small SEO tool",
-        "longDescription": "Your own small SEO tool inside ChatGPT. Track keywords for your site and up to five competitors, refresh rankings through ChatGPT's Apify app (or daily on your own Apify token), and see positions, movers over 1, 7 and 30 days, CTR-weighted visibility and share of voice. Each keyword has a position history chart and today's Google top 10, People Also Ask questions and AI overview. A daily check of your own pages flags missing titles, noindex, redirects and slow responses. Ask ChatGPT to explain today's changes, plan your week or turn the questions into content ideas. Everything stays on your computer.",
+        "longDescription": "Your own custom SEO dashboard inside ChatGPT, built on ChatGPT Plugin Extensions. Track keywords for your site and up to five competitors, refresh rankings through ChatGPT's Apify app (or daily on your own Apify token), and see positions, movers over 1, 7 and 30 days, CTR-weighted visibility and share of voice. Each keyword has a position history chart and today's Google top 10, People Also Ask questions and AI overview. A daily check of your own pages flags missing titles, noindex, redirects and slow responses. Ask ChatGPT to explain today's changes, plan your week or turn the questions into content ideas. Everything stays on your computer.",
         "developerName": "jenstools",
         "category": "Productivity",
         "capabilities": ["Interactive", "Read", "Write"],
