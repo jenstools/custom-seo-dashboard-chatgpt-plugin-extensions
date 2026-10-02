@@ -11,4 +11,5 @@ description: First-run setup for SEO Dashboard. Runs once after the plugin is in
    - Through ChatGPT's Apify app (the default): the Refresh button asks you to run the Apify Actor `apify/google-search-scraper`, and the results are recorded with `seo.ingest`. The Apify app must be connected in ChatGPT.
    - Directly every day: the user pastes an Apify API token in the dashboard (Settings, never in the chat), and it runs once a day after a set hour while ChatGPT is open (catching up if a day was missed).
    Mention the cost: about $0.01 per keyword per refresh at top 20 on Apify's prices.
-4. Offer the first refresh: call `seo.plan`, and once the user agrees, run the Actor with the Apify app using exactly that input, then pass the dataset items to `seo.ingest`. Finish with `seo.summary`.
+4. Mention in one sentence that they can add Google Search Console clicks and impressions per keyword for free under Settings → Google Search Console in the dashboard (a read-only service-account key, pasted there, never in the chat).
+5. Offer the first refresh: call `seo.plan`, and once the user agrees, run the Actor with the Apify app using exactly that input, then pass the dataset items to `seo.ingest`. Finish with `seo.summary`.
