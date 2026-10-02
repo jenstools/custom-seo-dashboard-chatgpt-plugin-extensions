@@ -6,6 +6,7 @@ Track Google rankings for your keywords and up to five competitors, see what mov
 
 - **Rankings** for each keyword, with movers over 1, 7 and 30 days, CTR-weighted visibility and share of voice against your competitors
 - **Google Search Console** (optional, free): clicks, impressions, CTR and Google's average position for every keyword, 90 days of history, and the queries you get found with but don't track yet
+- **Search Console report tab**, like Google's Performance report: clicks, impressions, CTR and position over 7, 28 or 90 days vs the period before, top queries and pages with their change, brand vs other searches, countries, devices, striking-distance queries, and a CSV export
 - **Keyword detail:** position history chart (with Search Console's average position) and today's Google top 10, People Also Ask questions, related searches and the AI overview
 - **Site check** of your own pages once a day: missing titles, noindex, redirects, slow responses (free, no Apify needed)
 - **Ask ChatGPT** to explain today's changes, plan your SEO week or turn the questions people ask into content ideas
@@ -65,6 +66,8 @@ Add Google's own numbers to every keyword: clicks, impressions, CTR and average 
 4. In [Search Console](https://search.google.com/search-console), open your property → *Settings* → *Users and permissions* → *Add user*, and add the service account's email (the dashboard shows it, with a copy button). *Restricted* is enough.
 
 The dashboard then picks the property matching your domain (a domain property first), fetches the last 90 days and syncs once a day while ChatGPT is open. You can choose another property in Settings. Keywords are matched by exact query (case doesn't matter), so "running shoes" doesn't include "running shoes for kids". Search Console data lags two to three days.
+
+The **Search Console** tab is a report for the whole site: pick 7 days, 28 days or 3 months and compare with the period before. Click a metric to chart it, switch the table between queries, pages, countries and devices, sort and filter it, or download it as CSV. *Brand vs other searches* splits clicks by queries containing your brand (your domain name by default; *Edit* to set your own terms). *Striking distance* lists queries at positions 4–20 with the clicks they could bring at #3. Ask ChatGPT to write the report, find quick wins or explain a change. Queries Google anonymizes count in the totals but not in brand vs other.
 
 The key is stored only on your computer in `~/.workbench/seo-dashboard/gsc-credentials.json` (readable only by you) and only used to sign in to Google with read-only access. ChatGPT never sees it. *Disconnect* deletes the key and the synced data. Setting `SEO_DASHBOARD_GSC_KEY_FILE` to the path of a key file overrides the saved one.
 
