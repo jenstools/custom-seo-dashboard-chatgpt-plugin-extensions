@@ -1,97 +1,82 @@
-# Custom SEO Dashboard for ChatGPT
+# SEO Dashboard for ChatGPT
 
-**A custom SEO dashboard that runs inside ChatGPT, built as a plugin on OpenAI's new [Plugin Extensions](https://developers.openai.com/plugins/build/extensions) (MCP Extensions).**
+A free SEO dashboard by **snipKI GmbH**, built with OpenAI's new [Plugin Extensions](https://developers.openai.com/plugins/build/extensions). Track Google rankings, compare competitors, read Search Console reports and ask ChatGPT what changed.
 
-Track Google rankings for your keywords and up to five competitors, see what moved, and ask ChatGPT what to do about it. It isn't a chat bot that pastes tables: the dashboard is a real app in the ChatGPT sidebar, and ChatGPT can read and update it while you talk.
-
-- **Rankings** for each keyword, with movers over 1, 7 and 30 days, CTR-weighted visibility and share of voice against your competitors
-- **Google Search Console** (optional, free): clicks, impressions, CTR and Google's average position for every keyword, 90 days of history, and the queries you get found with but don't track yet
-- **Search Console report tab**, like Google's Performance report: clicks, impressions, CTR and position over 7, 28 or 90 days vs the period before, top queries and pages with their change, brand vs other searches, countries, devices, striking-distance queries, and a CSV export
-- **Keyword detail:** position history chart (with Search Console's average position) and today's Google top 10, People Also Ask questions, related searches and the AI overview
-- **Site check** of your own pages once a day: missing titles, noindex, redirects, slow responses (free, no Apify needed)
-- **Ask ChatGPT** to explain today's changes, plan your SEO week or turn the questions people ask into content ideas
-- Opens as an app in the ChatGPT sidebar. Everything stays on your computer.
-
-Try in chat: *"Refresh my SEO dashboard"* · *"Explain today's ranking changes"* · *"What should I work on for SEO this week?"*
-
-## Built on ChatGPT Plugin Extensions
-
-Plugin Extensions let a plugin hook into ChatGPT itself, not just answer in the chat. SEO Dashboard uses them like this:
-
-| Extension | In SEO Dashboard |
-| --- | --- |
-| Sidebar app | The full dashboard opens from the ChatGPT sidebar and works fullscreen |
-| Conversation panel | Opens the dashboard next to a chat, so you can talk about the rankings you're looking at |
-| Composer @mentions | @mention a project or keyword to hand its report or history to ChatGPT |
-| Deep links | Links (and ChatGPT) open the dashboard straight at a keyword or tab |
-| Rich forms | Set up a project in a native ChatGPT form |
-| Plugin settings | Refresh mode and hour, results per keyword, AI overview tracking, cost cap and notifications in ChatGPT's plugin settings |
-| Plugin onboarding | A guided first-run setup in the chat |
-
-Under the hood it's a local [MCP](https://modelcontextprotocol.io) server with an [MCP App](https://github.com/modelcontextprotocol/ext-apps) UI, using OpenAI's `@openai/mcp-extensions` SDK. It's a custom, independent plugin, not an official OpenAI or Apify product.
+This release is publicly available through a GitHub plugin marketplace for **manual installation in the desktop app**. It has not been submitted to or approved for OpenAI's public Plugin Directory. It is an independent plugin, not an official OpenAI, Google or Apify product.
 
 ## Install
 
-You need:
+You need the desktop app with plugin support, [Node.js 22 or newer](https://nodejs.org), and the [Codex CLI](https://developers.openai.com/codex/cli/).
 
-- the **ChatGPT desktop app** with plugins (tested on macOS)
-- **[Node.js 22](https://nodejs.org) or newer**
-- the **Codex CLI** in your terminal: `npm install -g @openai/codex`
+Install the CLI once if needed:
 
-Then run:
+```sh
+npm install -g @openai/codex
+```
+
+Then install SEO Dashboard:
 
 ```sh
 codex plugin marketplace add jenstools/custom-seo-dashboard-chatgpt-plugin-extensions
 codex plugin add seo-dashboard@seo-dashboard
 ```
 
-**Restart ChatGPT.** On a Mac: `osascript -e 'tell application id "com.openai.codex" to quit'`, then open it again. SEO Dashboard now shows up in the sidebar and as an @mention. ChatGPT walks you through setup the first time: your domain, the Google country and language, your keywords and competitors.
+Fully quit and reopen the desktop app. SEO Dashboard appears in the sidebar. Ask: **"Set up my SEO dashboard."** Enter your domain, Google country/language, keywords and up to five competitors.
 
-## How rankings refresh
+### Install from the release ZIP
 
-Rankings come from Google results scraped by the Apify Actor [`apify/google-search-scraper`](https://apify.com/apify/google-search-scraper). Apify bills these runs to your own Apify account: about **$0.01 per keyword per refresh** at the default depth (top 20). Choose one of two ways:
+Download the ZIP from [Releases](https://github.com/jenstools/custom-seo-dashboard-chatgpt-plugin-extensions/releases), extract it, and register the extracted marketplace folder:
 
-1. **Through ChatGPT's Apify app** (default, no key stored). Connect the Apify app in ChatGPT. **Refresh** asks ChatGPT to run the Actor with your keyword list and hands the results to the dashboard.
-2. **Daily with your own Apify API key.** Paste a key under *Settings → Apify API key* in the dashboard (never in the chat). The refresh then runs once a day after the hour you choose while ChatGPT is open, and catches up when you open ChatGPT after a missed day. Each run's cost is recorded, and *Max cost per run* is passed to Apify as the run's charge limit. The key is stored only on your computer in `~/.workbench/seo-dashboard/credentials.json` (readable only by you). ChatGPT never sees it. Setting the `APIFY_TOKEN` environment variable overrides it.
+```sh
+codex plugin marketplace add /absolute/path/to/seo-dashboard
+codex plugin add seo-dashboard@seo-dashboard
+```
 
-Search results come from the web. The plugin tells ChatGPT to treat them as data, never as instructions.
+The extracted folder contains .agents/plugins/marketplace.json and plugins/seo-dashboard/. Use one installation source for this plugin to avoid duplicates.
 
-## Google Search Console (optional)
+## Connect your credentials
 
-Add Google's own numbers to every keyword: clicks, impressions, CTR and average position over the last 28 days, a 90-day history, and the top queries people find your site with that you don't track yet (one click to track them). It's free and read-only. You need a Google Cloud service account:
+Enter credentials only in **dashboard Settings**, never in a conversation.
 
-1. In [Google Cloud](https://console.cloud.google.com/apis/library/searchconsole.googleapis.com), turn on the **Google Search Console API** for a project, then create a service account under *IAM & Admin → Service accounts*.
-2. Open the service account → *Keys* → *Add key* → *Create new key* → *JSON*. A key file downloads.
-3. In the dashboard, open *Settings → Google Search Console* and paste the whole file (never in the chat).
-4. In [Search Console](https://search.google.com/search-console), open your property → *Settings* → *Users and permissions* → *Add user*, and add the service account's email (the dashboard shows it, with a copy button). *Restricted* is enough.
+1. **Apify:** open Settings → Apify API key and paste your own key. This enables direct daily refreshes while the local plugin is running, with catch-up after missed days. Set the refresh hour and maximum cost per run in Settings. Apify bills your own account for [Google Search Scraper](https://apify.com/apify/google-search-scraper) runs; the plugin itself is free. Estimates depend on keywords, depth and current Apify pricing.
+2. **Google Search Console, optional:** enable the [Search Console API](https://console.cloud.google.com/apis/library/searchconsole.googleapis.com) in your Google Cloud project. Create a service account and download its JSON key. Paste the JSON in Settings → Google Search Console. Add that service-account email to your property under Search Console → Settings → Users and permissions; Restricted access is sufficient for reporting. Choose the matching property in the dashboard. The plugin uses read-only API access.
+3. Click **Refresh** in the dashboard. After the run completes, ask **"Explain today's ranking changes."** Search Console syncs daily; its data normally lags behind the current date.
 
-The dashboard then picks the property matching your domain (a domain property first), fetches the last 90 days and syncs once a day while ChatGPT is open. You can choose another property in Settings. Keywords are matched by exact query (case doesn't matter), so "running shoes" doesn't include "running shoes for kids". Search Console data lags two to three days.
+If you prefer not to save an Apify key, connect the Apify app and use the dashboard's ChatGPT refresh mode. ChatGPT plans the Actor run, obtains permission for the charge, and imports its results.
 
-The **Search Console** tab is a report for the whole site: pick 7 days, 28 days or 3 months and compare with the period before. Click a metric to chart it, switch the table between queries, pages, countries and devices, sort and filter it, or download it as CSV. *Brand vs other searches* splits clicks by queries containing your brand (your domain name by default; *Edit* to set your own terms). *Striking distance* lists queries at positions 4–20 with the clicks they could bring at #3. Ask ChatGPT to write the report, find quick wins or explain a change. Queries Google anonymizes count in the totals but not in brand vs other.
+## What you get
 
-The key is stored only on your computer in `~/.workbench/seo-dashboard/gsc-credentials.json` (readable only by you) and only used to sign in to Google with read-only access. ChatGPT never sees it. *Disconnect* deletes the key and the synced data. Setting `SEO_DASHBOARD_GSC_KEY_FILE` to the path of a key file overrides the saved one.
+- Up to 200 keywords per project and five competitor domains, with positions, daily/weekly/monthly movers, visibility and share of voice.
+- Keyword history, Google results, People Also Ask, related queries and AI overviews when the source provides them.
+- Search Console clicks, impressions, CTR and average position. Compare 7, 28 or 90 days with the previous period; inspect queries, pages, countries, devices, brand searches and queries near the top positions; export CSV.
+- A daily check of your own pages for missing titles, noindex, redirects and slow responses.
+- A sidebar dashboard, a panel beside conversations, project and keyword mentions, setup forms and plugin settings using OpenAI Plugin Extensions.
+
+Search Console position is an average across impressions. Daily scraped rankings are observations for the configured country, language and depth. The dashboard distinguishes them; no ranking improvement is guaranteed.
 
 ## Your data
 
-Projects, keywords and ranking history are stored in `~/.workbench/seo-dashboard/` on your computer. The plugin itself only contacts Apify (for the Google searches), Google's Search Console API if you connect it, and your own site (for the site check). What you ask about in a chat goes to ChatGPT like any other conversation.
+The plugin stores projects, keywords and history in `~/.workbench/seo-dashboard/`. Apify and Google keys are stored in separate local files with owner-only file permissions; they are not encrypted by the plugin. The Apify key is used to contact Apify. The Google private key signs a read-only access request to Google's token endpoint. Site checks contact your configured website. Direct mode does not send these credentials to a snipKI server.
 
-## Update
+The local files are `credentials.json` for Apify and `gsc-credentials.json` for Search Console. Credentials are excluded from returned tool results. Data you ask ChatGPT to analyze is shared with ChatGPT as part of that conversation. Web results and Search Console queries are treated as untrusted data.
+
+**Disconnect Apify** deletes the saved Apify key. **Disconnect Search Console** deletes its saved key and synced data. Removing the plugin leaves its local data folder in place until you delete it. Environment overrides `APIFY_TOKEN` and `SEO_DASHBOARD_GSC_KEY_FILE` take precedence over saved credentials; disconnecting a saved key does not remove an environment override.
+
+## Update or remove
 
 ```sh
 codex plugin marketplace upgrade seo-dashboard
 codex plugin add seo-dashboard@seo-dashboard
 ```
 
-Then restart ChatGPT.
-
-## Remove
+Fully quit and reopen the desktop app after updating. To remove:
 
 ```sh
 codex plugin remove seo-dashboard@seo-dashboard
 ```
 
-Your data in `~/.workbench/seo-dashboard/` stays until you delete that folder.
+## Support and license
 
-## License
+Report installation or plugin issues through [GitHub Issues](https://github.com/jenstools/custom-seo-dashboard-chatgpt-plugin-extensions/issues). Include your app version, Node version and the error message after removing keys, tokens and private site data. Never attach credentials.
 
-MIT
+[snipKI](https://snipki.de) · [Publisher details](https://snipki.de/impressum/) · MIT license.
